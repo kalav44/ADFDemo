@@ -23,6 +23,12 @@
 		"ADLSLS_properties_typeProperties_url": {
 			"value": "https://saforadfdemo1.dfs.core.windows.net/"
 		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://keyvault-adf-con.vault.azure.net/"
+		},
+		"LSSQlAzureKeyVault_properties_typeProperties_connectionString_secretName": {
+			"value": "SecreteSQlCon"
+		},
 		"EventTrgger_properties_pipeline5SetVariables_parameters_filename": {
 			"value": "@triggerBody().fileName"
 		},
