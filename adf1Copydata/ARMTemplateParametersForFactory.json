@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf1Copydata"
+		},
+		"ADLSLS_accountKey": {
+			"value": ""
+		},
+		"AzureSqlDatabaseLSForDataFlow_connectionString": {
+			"value": ""
+		},
+		"LSsqlSetVariable_connectionString": {
+			"value": ""
+		},
+		"lsAzureSql_connectionString": {
+			"value": ""
+		},
+		"lsazuresqllookup_connectionString": {
+			"value": ""
+		},
+		"ADLSLS_properties_typeProperties_url": {
+			"value": "https://saforadfdemo1.dfs.core.windows.net/"
+		},
+		"EventTrgger_properties_pipeline5SetVariables_parameters_filename": {
+			"value": "@triggerBody().fileName"
+		},
+		"EventTrgger_properties_typeProperties_scope": {
+			"value": "/subscriptions/81088ee5-c7c7-4917-982b-0b95822eb931/resourceGroups/ADF-Learning-1/providers/Microsoft.Storage/storageAccounts/saforadfdemo1"
+		}
+	}
+}

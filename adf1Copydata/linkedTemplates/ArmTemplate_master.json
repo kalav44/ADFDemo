@@ -1,0 +1,198 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf1Copydata"
+		},
+		"ADLSLS_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ADLSLS'"
+		},
+		"AzureSqlDatabaseLSForDataFlow_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabaseLSForDataFlow'"
+		},
+		"LSsqlSetVariable_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LSsqlSetVariable'"
+		},
+		"lsAzureSql_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'lsAzureSql'"
+		},
+		"lsazuresqllookup_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'lsazuresqllookup'"
+		},
+		"ADLSLS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://saforadfdemo1.dfs.core.windows.net/"
+		},
+		"EventTrgger_properties_pipeline5SetVariables_parameters_filename": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"EventTrgger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/81088ee5-c7c7-4917-982b-0b95822eb931/resourceGroups/ADF-Learning-1/providers/Microsoft.Storage/storageAccounts/saforadfdemo1"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adf1Copydata_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"ADLSLS_accountKey": {
+						"value": "[parameters('ADLSLS_accountKey')]"
+					},
+					"AzureSqlDatabaseLSForDataFlow_connectionString": {
+						"value": "[parameters('AzureSqlDatabaseLSForDataFlow_connectionString')]"
+					},
+					"LSsqlSetVariable_connectionString": {
+						"value": "[parameters('LSsqlSetVariable_connectionString')]"
+					},
+					"lsAzureSql_connectionString": {
+						"value": "[parameters('lsAzureSql_connectionString')]"
+					},
+					"lsazuresqllookup_connectionString": {
+						"value": "[parameters('lsazuresqllookup_connectionString')]"
+					},
+					"ADLSLS_properties_typeProperties_url": {
+						"value": "[parameters('ADLSLS_properties_typeProperties_url')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "adf1Copydata_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf1Copydata_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "adf1Copydata_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf1Copydata_ArmTemplate_1')]"
+			]
+		},
+		{
+			"name": "adf1Copydata_ArmTemplate_3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf1Copydata_ArmTemplate_2')]"
+			]
+		},
+		{
+			"name": "adf1Copydata_ArmTemplate_4",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_4.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf1Copydata_ArmTemplate_3')]"
+			]
+		},
+		{
+			"name": "adf1Copydata_ArmTemplate_5",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_5.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"EventTrgger_properties_pipeline5SetVariables_parameters_filename": {
+						"value": "[parameters('EventTrgger_properties_pipeline5SetVariables_parameters_filename')]"
+					},
+					"EventTrgger_properties_typeProperties_scope": {
+						"value": "[parameters('EventTrgger_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf1Copydata_ArmTemplate_4')]"
+			]
+		}
+	]
+}
