@@ -1,0 +1,12 @@
+{
+	"name": "DSSQLKeyvault",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LSSQlAzureKeyVault",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
