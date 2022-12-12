@@ -1,0 +1,83 @@
+{
+	"name": "dataflow7Esits",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTableforDataFlow",
+						"type": "DatasetReference"
+					},
+					"name": "Emp"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable2forDataFlow",
+						"type": "DatasetReference"
+					},
+					"name": "dept"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DSDataFlowDestExists",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "exists1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empid as integer,",
+				"          ename as string,",
+				"          deptno as integer,",
+				"          salary as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Emp",
+				"source(output(",
+				"          deptno as integer,",
+				"          dname as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dept",
+				"Emp, dept exists(Emp@deptno == dept@deptno,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> exists1",
+				"exists1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          empid as string,",
+				"          ename as string,",
+				"          deptno as string,",
+				"          salary as string,",
+				"          Workstatus as string",
+				"     ),",
+				"     partitionFileNames:['EmpExists.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          empid,",
+				"          ename,",
+				"          deptno,",
+				"          salary",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}

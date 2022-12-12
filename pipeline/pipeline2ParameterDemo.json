@@ -1,0 +1,98 @@
+{
+	"name": "pipeline2ParameterDemo",
+	"properties": {
+		"activities": [
+			{
+				"name": "CopyTab1ToTab2",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "datasetSQL",
+						"type": "DatasetReference",
+						"parameters": {
+							"tablenamedataset": {
+								"value": "@pipeline().parameters.tablenameSourcePipeline",
+								"type": "Expression"
+							},
+							"dbnamedataset": {
+								"value": "@pipeline().parameters.DBnamePipeline",
+								"type": "Expression"
+							},
+							"servernamedataset": {
+								"value": "@pipeline().parameters.ServerNamePipeline",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "datasetSQL",
+						"type": "DatasetReference",
+						"parameters": {
+							"tablenamedataset": {
+								"value": "@pipeline().parameters.tablenameDestPipeline",
+								"type": "Expression"
+							},
+							"dbnamedataset": {
+								"value": "@pipeline().parameters.DBnamePipeline",
+								"type": "Expression"
+							},
+							"servernamedataset": {
+								"value": "@pipeline().parameters.ServerNamePipeline",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"tablenameSourcePipeline": {
+				"type": "string"
+			},
+			"tablenameDestPipeline": {
+				"type": "string"
+			},
+			"DBnamePipeline": {
+				"type": "string"
+			},
+			"ServerNamePipeline": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-11-30T08:57:34Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

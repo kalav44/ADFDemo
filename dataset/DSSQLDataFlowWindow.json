@@ -1,0 +1,40 @@
+{
+	"name": "DSSQLDataFlowWindow",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabaseLSForDataFlow",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "name",
+				"type": "varchar"
+			},
+			{
+				"name": "country",
+				"type": "varchar"
+			},
+			{
+				"name": "dept",
+				"type": "varchar"
+			},
+			{
+				"name": "sal",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "empdetails"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

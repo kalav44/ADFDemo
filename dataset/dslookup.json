@@ -1,0 +1,19 @@
+{
+	"name": "dslookup",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLSLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "abc.txt",
+				"fileSystem": "input"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

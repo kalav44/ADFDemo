@@ -1,0 +1,61 @@
+{
+	"name": "DsDataFlowJsondestEmpFlattern",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLSLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "dataflow"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"userId": {
+					"type": "string"
+				},
+				"jobTitleName": {
+					"type": "string"
+				},
+				"firstName": {
+					"type": "string"
+				},
+				"lastName": {
+					"type": "string"
+				},
+				"preferredFullName": {
+					"type": "string"
+				},
+				"employeeCode": {
+					"type": "string"
+				},
+				"region": {
+					"type": "string"
+				},
+				"contact": {
+					"type": "object",
+					"properties": {
+						"phoneNumber": {
+							"type": "string"
+						},
+						"emailAddress": {
+							"type": "string"
+						}
+					}
+				},
+				"skills": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

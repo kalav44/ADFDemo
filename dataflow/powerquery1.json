@@ -1,0 +1,28 @@
+{
+	"name": "powerquery1",
+	"properties": {
+		"type": "WranglingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "AzureSqlTableforDataFlow",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> AzureSqlTableforDataFlow",
+					"dataset": {
+						"referenceName": "AzureSqlTableforDataFlow",
+						"type": "DatasetReference"
+					}
+				},
+				{
+					"name": "AzureSqlTable2forDataFlow",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> AzureSqlTable2forDataFlow",
+					"dataset": {
+						"referenceName": "AzureSqlTable2forDataFlow",
+						"type": "DatasetReference"
+					}
+				}
+			],
+			"script": "section Section1;\r\nshared AzureSqlTableforDataFlow = let AdfDoc = Sql.Database(\"adfsqlserver1adf.database.windows.net\", \"db1\", [CreateNavigationProperties = false]), InputTable = AdfDoc{[Schema=\"dbo\",Item=\"emp\"]}[Data] in InputTable;\r\nshared AzureSqlTable2forDataFlow = let AdfDoc = Sql.Database(\"adfsqlserver1adf.database.windows.net\", \"db1\", [CreateNavigationProperties = false]), InputTable = AdfDoc{[Schema=\"dbo\",Item=\"dept\"]}[Data] in InputTable;\r\nshared UserQuery = let Source = #\"AzureSqlTableforDataFlow\" in Source;\r\n",
+			"documentLocale": "en-us"
+		}
+	}
+}

@@ -1,0 +1,37 @@
+{
+	"name": "DsDataFlowSourceSerogate",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLSLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Employee.csv",
+				"fileSystem": "dataflow"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Ename",
+				"type": "String"
+			},
+			{
+				"name": "Desig",
+				"type": "String"
+			},
+			{
+				"name": "Sal",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

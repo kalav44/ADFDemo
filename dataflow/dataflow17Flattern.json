@@ -1,0 +1,93 @@
+{
+	"name": "dataflow17Flattern",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DSDataFlowEmpJson",
+						"type": "DatasetReference"
+					},
+					"name": "empjson"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DsDataFlowJsondestEmpFlattern",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "flatten1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          contact as (emailAddress as string, phoneNumber as string),",
+				"          employeeCode as string,",
+				"          firstName as string,",
+				"          jobTitleName as string,",
+				"          lastName as string,",
+				"          preferredFullName as string,",
+				"          region as string,",
+				"          skills as string[],",
+				"          userId as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     limit: 100,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'arrayOfDocuments') ~> empjson",
+				"empjson foldDown(unroll(skills),",
+				"     mapColumn(",
+				"          employeeCode,",
+				"          firstName,",
+				"          jobTitleName,",
+				"          lastName,",
+				"          preferredFullName,",
+				"          region,",
+				"          skills,",
+				"          userId",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1",
+				"flatten1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          userId as string,",
+				"          jobTitleName as string,",
+				"          firstName as string,",
+				"          lastName as string,",
+				"          preferredFullName as string,",
+				"          employeeCode as string,",
+				"          region as string,",
+				"          contact as (phoneNumber as string, emailAddress as string),",
+				"          skills as string[]",
+				"     ),",
+				"     partitionFileNames:['empJsonflattern.json'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          employeeCode,",
+				"          firstName,",
+				"          jobTitleName,",
+				"          lastName,",
+				"          preferredFullName,",
+				"          region,",
+				"          skills,",
+				"          userId",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}

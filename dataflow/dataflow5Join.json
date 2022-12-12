@@ -1,0 +1,82 @@
+{
+	"name": "dataflow5Join",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTableforDataFlow",
+						"type": "DatasetReference"
+					},
+					"name": "emp"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable2forDataFlow",
+						"type": "DatasetReference"
+					},
+					"name": "dept"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DSDataFlowEmpJoinDept",
+						"type": "DatasetReference"
+					},
+					"name": "EmpJoinDept"
+				}
+			],
+			"transformations": [
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "join1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empid as integer,",
+				"          ename as string,",
+				"          deptno as integer,",
+				"          salary as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> emp",
+				"source(output(",
+				"          deptno as integer,",
+				"          dname as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dept",
+				"emp aggregate(groupBy(deptno),",
+				"     TotalEmployes = count(empid)) ~> aggregate1",
+				"aggregate1, dept join(aggregate1@deptno == dept@deptno,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['empjoindept'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          deptno = dept@deptno,",
+				"          dname,",
+				"          TotalEmployes",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> EmpJoinDept"
+			]
+		}
+	}
+}

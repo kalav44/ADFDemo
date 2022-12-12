@@ -1,0 +1,27 @@
+{
+	"name": "AzureSqlTableVariabledatasetHourly",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LSsqlSetVariable",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ProductId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ProductName",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Hourly"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

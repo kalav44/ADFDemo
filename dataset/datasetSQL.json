@@ -1,0 +1,41 @@
+{
+	"name": "datasetSQL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lsAzureSql",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"servername": {
+					"value": "@dataset().servernamedataset",
+					"type": "Expression"
+				},
+				"dbname": {
+					"value": "@dataset().dbnamedataset",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"tablenamedataset": {
+				"type": "string"
+			},
+			"dbnamedataset": {
+				"type": "string"
+			},
+			"servernamedataset": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": {
+				"value": "@dataset().tablenamedataset",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

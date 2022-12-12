@@ -1,0 +1,28 @@
+{
+	"name": "EventTrgger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pipeline5SetVariables",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"filename": "@triggerBody().fileName"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/variabledemo/blobs/input/",
+			"blobPathEndsWith": ".csv",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/81088ee5-c7c7-4917-982b-0b95822eb931/resourceGroups/ADF-Learning-1/providers/Microsoft.Storage/storageAccounts/saforadfdemo1",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}

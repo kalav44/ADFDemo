@@ -1,0 +1,9 @@
+{
+	"name": "adf1Copydata",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "614ec726-252e-4fbd-86eb-5daee0433ec3",
+		"tenantId": "7814f9c2-edd0-41a6-bc73-53967f243557"
+	}
+}

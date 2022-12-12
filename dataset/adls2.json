@@ -1,0 +1,19 @@
+{
+	"name": "adls2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLSLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "abcd.txt",
+				"fileSystem": "output"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,17 @@
+{
+	"name": "AzureSqlTablevariable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LSsqlSetVariable",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Daily"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

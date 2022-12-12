@@ -1,0 +1,39 @@
+{
+	"name": "pipeline6AppendVariable",
+	"properties": {
+		"activities": [
+			{
+				"name": "Append variable1",
+				"type": "AppendVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "sales",
+					"value": {
+						"value": "@pipeline().parameters.filenam",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"filenam": {
+				"type": "string",
+				"defaultValue": "salesworld.txt"
+			}
+		},
+		"variables": {
+			"sales": {
+				"type": "Array",
+				"defaultValue": [
+					"us",
+					"ind",
+					"uk"
+				]
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-12-01T10:35:01Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
