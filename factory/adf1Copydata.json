@@ -1,5 +1,13 @@
 {
 	"name": "adf1Copydata",
+	"properties": {
+		"globalParameters": {
+			"Path": {
+				"type": "string",
+				"value": "input"
+			}
+		}
+	},
 	"location": "centralindia",
 	"identity": {
 		"type": "SystemAssigned",
