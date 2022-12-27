@@ -14,6 +14,9 @@
 		"DS_Emp_accountKey": {
 			"value": ""
 		},
+		"LS_AzureSQl_connectionString": {
+			"value": ""
+		},
 		"LS_delete_accountKey": {
 			"value": ""
 		},

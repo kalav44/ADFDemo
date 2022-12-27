@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'DS_Emp'"
 		},
+		"LS_AzureSQl_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_AzureSQl'"
+		},
 		"LS_delete_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'LS_delete'"
@@ -98,6 +102,9 @@
 					},
 					"DS_Emp_accountKey": {
 						"value": "[parameters('DS_Emp_accountKey')]"
+					},
+					"LS_AzureSQl_connectionString": {
+						"value": "[parameters('LS_AzureSQl_connectionString')]"
 					},
 					"LS_delete_accountKey": {
 						"value": "[parameters('LS_delete_accountKey')]"
