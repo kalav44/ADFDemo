@@ -20,6 +20,9 @@
 		"lsazuresqllookup_connectionString": {
 			"value": ""
 		},
+		"LS_delete_accountKey": {
+			"value": ""
+		},
 		"ADLSLS_properties_typeProperties_url": {
 			"value": "https://saforadfdemo1.dfs.core.windows.net/"
 		},
@@ -34,6 +37,9 @@
 		},
 		"EventTrgger_properties_typeProperties_scope": {
 			"value": "/subscriptions/81088ee5-c7c7-4917-982b-0b95822eb931/resourceGroups/ADF-Learning-1/providers/Microsoft.Storage/storageAccounts/saforadfdemo1"
+		},
+		"LS_delete_properties_typeProperties_url": {
+			"value": "https://saforadfdemo1.dfs.core.windows.net/"
 		},
 		"containerUri": {
 			"value": ""
