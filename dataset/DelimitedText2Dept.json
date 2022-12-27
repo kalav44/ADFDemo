@@ -1,15 +1,15 @@
 {
-	"name": "DS_GlobalparamaterEmp",
+	"name": "DelimitedText2Dept",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "DS_Emp",
+			"referenceName": "ADLSLS",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"Path": {
+			"path": {
 				"type": "string"
 			},
-			"FileName": {
+			"filename": {
 				"type": "string"
 			}
 		},
@@ -19,11 +19,11 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "@dataset().FileName",
+					"value": "@dataset().filename",
 					"type": "Expression"
 				},
 				"fileSystem": {
-					"value": "@dataset().Path",
+					"value": "@dataset().path",
 					"type": "Expression"
 				}
 			},

@@ -1,5 +1,5 @@
 {
-	"name": "pipeline35GlobalparameterEmp",
+	"name": "pipeline36GlobalParameterDept",
 	"properties": {
 		"activities": [
 			{
@@ -49,15 +49,15 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DS_GlobalparamaterEmp",
+						"referenceName": "DelimitedText2Dept",
 						"type": "DatasetReference",
 						"parameters": {
-							"Path": {
+							"path": {
 								"value": "@pipeline().globalParameters.Path",
 								"type": "Expression"
 							},
-							"FileName": {
-								"value": "@pipeline().parameters.Filename",
+							"filename": {
+								"value": "@pipeline().parameters.filename",
 								"type": "Expression"
 							}
 						}
@@ -65,16 +65,16 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "DelimitedText3",
+						"referenceName": "DelimitedText2",
 						"type": "DatasetReference"
 					}
 				]
 			}
 		],
 		"parameters": {
-			"Filename": {
+			"filename": {
 				"type": "string",
-				"defaultValue": "Employee.csv"
+				"defaultValue": "Department.csv"
 			}
 		},
 		"annotations": []
