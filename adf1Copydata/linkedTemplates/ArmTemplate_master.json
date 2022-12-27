@@ -15,6 +15,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabaseLSForDataFlow'"
 		},
+		"DS_Emp_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'DS_Emp'"
+		},
+		"LS_delete_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_delete'"
+		},
 		"LSsqlSetVariable_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LSsqlSetVariable'"
@@ -27,10 +35,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'lsazuresqllookup'"
 		},
-		"LS_delete_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'LS_delete'"
-		},
 		"ADLSLS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://saforadfdemo1.dfs.core.windows.net/"
@@ -39,9 +43,17 @@
 			"type": "string",
 			"defaultValue": "https://keyvault-adf-con.vault.azure.net/"
 		},
+		"DS_Emp_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://saforadfdemo1.dfs.core.windows.net/"
+		},
 		"LSSQlAzureKeyVault_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "SecreteSQlCon"
+		},
+		"LS_delete_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://saforadfdemo1.dfs.core.windows.net/"
 		},
 		"EventTrgger_properties_pipeline5SetVariables_parameters_filename": {
 			"type": "string",
@@ -50,10 +62,6 @@
 		"EventTrgger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/81088ee5-c7c7-4917-982b-0b95822eb931/resourceGroups/ADF-Learning-1/providers/Microsoft.Storage/storageAccounts/saforadfdemo1"
-		},
-		"LS_delete_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://saforadfdemo1.dfs.core.windows.net/"
 		},
 		"containerUri": {
 			"type": "string",
@@ -88,6 +96,12 @@
 					"AzureSqlDatabaseLSForDataFlow_connectionString": {
 						"value": "[parameters('AzureSqlDatabaseLSForDataFlow_connectionString')]"
 					},
+					"DS_Emp_accountKey": {
+						"value": "[parameters('DS_Emp_accountKey')]"
+					},
+					"LS_delete_accountKey": {
+						"value": "[parameters('LS_delete_accountKey')]"
+					},
 					"LSsqlSetVariable_connectionString": {
 						"value": "[parameters('LSsqlSetVariable_connectionString')]"
 					},
@@ -97,14 +111,14 @@
 					"lsazuresqllookup_connectionString": {
 						"value": "[parameters('lsazuresqllookup_connectionString')]"
 					},
-					"LS_delete_accountKey": {
-						"value": "[parameters('LS_delete_accountKey')]"
-					},
 					"ADLSLS_properties_typeProperties_url": {
 						"value": "[parameters('ADLSLS_properties_typeProperties_url')]"
 					},
 					"AzureKeyVault1_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
+					},
+					"DS_Emp_properties_typeProperties_url": {
+						"value": "[parameters('DS_Emp_properties_typeProperties_url')]"
 					},
 					"LS_delete_properties_typeProperties_url": {
 						"value": "[parameters('LS_delete_properties_typeProperties_url')]"
@@ -146,9 +160,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"LSSQlAzureKeyVault_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('LSSQlAzureKeyVault_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},
@@ -169,6 +180,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"LSSQlAzureKeyVault_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('LSSQlAzureKeyVault_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},
@@ -209,6 +223,26 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf1Copydata_ArmTemplate_4')]"
+			]
+		},
+		{
+			"name": "adf1Copydata_ArmTemplate_6",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_6.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
 					},
 					"EventTrgger_properties_pipeline5SetVariables_parameters_filename": {
 						"value": "[parameters('EventTrgger_properties_pipeline5SetVariables_parameters_filename')]"
@@ -219,7 +253,7 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'adf1Copydata_ArmTemplate_4')]"
+				"[resourceId('Microsoft.Resources/deployments', 'adf1Copydata_ArmTemplate_5')]"
 			]
 		}
 	]

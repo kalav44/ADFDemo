@@ -11,6 +11,12 @@
 		"AzureSqlDatabaseLSForDataFlow_connectionString": {
 			"value": ""
 		},
+		"DS_Emp_accountKey": {
+			"value": ""
+		},
+		"LS_delete_accountKey": {
+			"value": ""
+		},
 		"LSsqlSetVariable_connectionString": {
 			"value": ""
 		},
@@ -20,26 +26,26 @@
 		"lsazuresqllookup_connectionString": {
 			"value": ""
 		},
-		"LS_delete_accountKey": {
-			"value": ""
-		},
 		"ADLSLS_properties_typeProperties_url": {
 			"value": "https://saforadfdemo1.dfs.core.windows.net/"
 		},
 		"AzureKeyVault1_properties_typeProperties_baseUrl": {
 			"value": "https://keyvault-adf-con.vault.azure.net/"
 		},
+		"DS_Emp_properties_typeProperties_url": {
+			"value": "https://saforadfdemo1.dfs.core.windows.net/"
+		},
 		"LSSQlAzureKeyVault_properties_typeProperties_connectionString_secretName": {
 			"value": "SecreteSQlCon"
+		},
+		"LS_delete_properties_typeProperties_url": {
+			"value": "https://saforadfdemo1.dfs.core.windows.net/"
 		},
 		"EventTrgger_properties_pipeline5SetVariables_parameters_filename": {
 			"value": "@triggerBody().fileName"
 		},
 		"EventTrgger_properties_typeProperties_scope": {
 			"value": "/subscriptions/81088ee5-c7c7-4917-982b-0b95822eb931/resourceGroups/ADF-Learning-1/providers/Microsoft.Storage/storageAccounts/saforadfdemo1"
-		},
-		"LS_delete_properties_typeProperties_url": {
-			"value": "https://saforadfdemo1.dfs.core.windows.net/"
 		},
 		"containerUri": {
 			"value": ""

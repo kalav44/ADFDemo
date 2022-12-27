@@ -1,1 +1,6 @@
-{}
+{
+	"Path": {
+		"type": "string",
+		"value": "input"
+	}
+}
