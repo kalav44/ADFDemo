@@ -1,8 +1,8 @@
 {
-	"name": "AzureSqlTable1",
+	"name": "Ds_AzureSQlDataFlowRank",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureSqlDatabaseLSForDataFlow",
+			"referenceName": "LS_AzureSQl",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,8 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "empdetails"
+			"table": "EmpdetailsRanked"
 		}
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }
