@@ -1,0 +1,25 @@
+{
+	"name": "DsSQlDataFlowCountryDetails",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSQl",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "code",
+				"type": "varchar"
+			},
+			{
+				"name": "name",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Countyrdetails"
+		}
+	}
+}

@@ -1,0 +1,34 @@
+{
+	"name": "AzureSqlTableEmpache",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSQl",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "empid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "name",
+				"type": "varchar"
+			},
+			{
+				"name": "gender",
+				"type": "varchar"
+			},
+			{
+				"name": "country",
+				"type": "varchar"
+			},
+			{
+				"name": "sal",
+				"type": "varchar"
+			}
+		]
+	}
+}
