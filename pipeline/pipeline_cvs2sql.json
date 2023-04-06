@@ -19,7 +19,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select * from ADFTableList where IsActive=1\nand SourceSystemName='ADLS' and DestSystemName='AzureSQLArchivalDB'",
+						"sqlReaderQuery": "select * from ADFTableList where IsActive=1\nand SourceSystemName='ADLS' and DestSystemName='AzureSQLArchivalDB' \nand DestTableName not in ('INSTALLATION_COMMENTS')\nand DestTableName='INSTALLATION_IDENTS'",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -45,9 +45,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup Get Table list').output",
+						"value": "@activity('Lookup Get Table list').output.value",
 						"type": "Expression"
 					},
+					"isSequential": true,
 					"activities": [
 						{
 							"name": "Copy data csv to azure  sql db",
@@ -107,37 +108,84 @@
 									"referenceName": "ds_adls_source",
 									"type": "DatasetReference",
 									"parameters": {
-										"TableName": "a",
-										"ADLSContainerName": "a",
-										"ADLSFileName": "a"
+										"ADLSContainerName": {
+											"value": "@item().SourceADLSFolderName",
+											"type": "Expression"
+										},
+										"ADLSFileName": {
+											"value": "@item().SourceADLSFileName",
+											"type": "Expression"
+										}
 									}
 								}
 							],
 							"outputs": [
 								{
 									"referenceName": "ds_sql_dest",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": {
+											"value": "@item().DestTableName",
+											"type": "Expression"
+										},
+										"schema": {
+											"value": "@item().DestDBSchema",
+											"type": "Expression"
+										}
+									}
 								}
 							]
+						},
+						{
+							"name": "Lookup sql check sum builder",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Copy data csv to azure  sql db",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT CHECKSUM_AGG(CHECKSUM(*)) \nFROM',item().DestTableName\")",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "ds_sql_dest",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": {
+											"value": "@item().DestTableName",
+											"type": "Expression"
+										},
+										"schema": {
+											"value": "@item().DestDBSchema",
+											"type": "Expression"
+										}
+									}
+								},
+								"firstRowOnly": false
+							}
 						}
 					]
 				}
 			}
 		],
-		"parameters": {
-			"TableName": {
-				"type": "string"
-			},
-			"ContainerName": {
-				"type": "string"
-			},
-			"FolderName": {
-				"type": "string"
-			},
-			"LoadType": {
-				"type": "string"
-			}
-		},
 		"annotations": [],
 		"lastPublishTime": "2023-04-06T06:20:48Z"
 	},
