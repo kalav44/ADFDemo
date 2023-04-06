@@ -6,6 +6,9 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
+			"TableName": {
+				"type": "string"
+			},
 			"ADLSContainerName": {
 				"type": "string"
 			},
