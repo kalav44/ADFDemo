@@ -19,7 +19,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select * from ADFTableList where IsActive=1\nand SourceSystemName='ADLS' and DestSystemName='AzureSQLArchivalDB' \nand DestTableName not in ('INSTALLATION_COMMENTS')\nand DestTableName in ('INSTALLATION_KPI_BLOCKS','INSTALLATION_TECH_DETAILS')",
+						"sqlReaderQuery": "select * from ADFTableList where IsActive=1\nand SourceSystemName='ADLS' and DestSystemName='AzureSQLArchivalDB' \nand DestTableName not in ('INSTALLATION_COMMENTS','MKT_ANALYSIS_BY_REASON')\n",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -168,7 +168,7 @@
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "Copy pipeline logs_copy failure",
+									"activity": "Copy pipeline logs Fail",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -212,7 +212,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "SELECT '@{pipeline().DataFactory}' as DataFactory_Name,\n'@{pipeline().Pipeline}' as Pipeline_Name,\n'@{pipeline().RunId}' as RunId,\n'@{item().src_name}' as Source,\n'@{item().dst_name}' as Destination,\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerId,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n'@{activity('Copy-Table').output.rowsCopied}' as rowsCopied,\n'@{activity('Copy-Table').output.rowsRead}' as RowsRead,\n'@{activity('Copy-Table').output.usedParallelCopies}' as No_ParallelCopies,\n'@{activity('Copy-Table').output.copyDuration}' as copyDuration_in_secs,\n'@{activity('Copy-Table').output.effectiveIntegrationRuntime}' as effectiveIntegrationRuntime,\n'@{activity('Copy-Table').output.executionDetails[0].source.type}' as Source_Type,\n'@{activity('Copy-Table').output.executionDetails[0].sink.type}' as Sink_Type,\n'@{activity('Copy-Table').output.executionDetails[0].status}' as Execution_Status,\n'@{activity('Copy-Table').output.executionDetails[0].start}' as CopyActivity_Start_Time,\n'@{utcnow()}' as CopyActivity_End_Time,\n'@{activity('Copy-Table').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_queuingDuration_in_secs,\n'@{activity('Copy-Table').output.executionDetails[0].detailedDurations.timeToFirstByte}' as CopyActivity_timeToFirstByte_in_secs,\n'@{activity('Copy-Table').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_transferDuration_in_secs",
+									"sqlReaderQuery": "SELECT '@{pipeline().DataFactory}' as DataFactory_Name,\n'@{pipeline().Pipeline}' as Pipeline_Name,\n'@{pipeline().RunId}' as RunId,\n'ADLS' as Source,\n'Azure SQL' as Destination,\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerId,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n'@{activity('Copy data csv to azure  sql db').output.rowsCopied}' as rowsCopied,\n'@{activity('Copy data csv to azure  sql db').output.rowsRead}' as RowsRead,\n'@{activity('Copy data csv to azure  sql db').output.usedParallelCopies}' as No_ParallelCopies,\n'@{activity('Copy data csv to azure  sql db').output.copyDuration}' as copyDuration_in_secs,\n'@{activity('Copy data csv to azure  sql db').output.effectiveIntegrationRuntime}' as effectiveIntegrationRuntime,\n'@{activity('Copy data csv to azure  sql db').output.executionDetails[0].source.type}' as Source_Type,\n'@{activity('Copy data csv to azure  sql db').output.executionDetails[0].sink.type}' as Sink_Type,\n'@{activity('Copy data csv to azure  sql db').output.executionDetails[0].status}' as Execution_Status,\n'@{activity('Copy data csv to azure  sql db').output.executionDetails[0].start}' as CopyActivity_Start_Time,\n'@{utcnow()}' as CopyActivity_End_Time",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -245,7 +245,7 @@
 							]
 						},
 						{
-							"name": "Copy pipeline logs_copy failure",
+							"name": "Copy pipeline logs Fail",
 							"type": "Copy",
 							"dependsOn": [
 								{
@@ -266,7 +266,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "SELECT '@{pipeline().DataFactory}' as DataFactory_Name,\n'@{pipeline().Pipeline}' as Pipeline_Name,\n'@{pipeline().RunId}' as RunId,\n'@{item().src_name}' as Source,\n'@{item().dst_name}' as Destination,\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerId,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n'@{activity('Copy-Table').output.rowsCopied}' as rowsCopied,\n'@{activity('Copy-Table').output.rowsRead}' as RowsRead,\n'@{activity('Copy-Table').output.usedParallelCopies}' as No_ParallelCopies,\n'@{activity('Copy-Table').output.copyDuration}' as copyDuration_in_secs,\n'@{activity('Copy-Table').output.effectiveIntegrationRuntime}' as effectiveIntegrationRuntime,\n'@{activity('Copy-Table').output.executionDetails[0].source.type}' as Source_Type,\n'@{activity('Copy-Table').output.executionDetails[0].sink.type}' as Sink_Type,\n'@{activity('Copy-Table').output.executionDetails[0].status}' as Execution_Status,\n'@{activity('Copy-Table').output.executionDetails[0].start}' as CopyActivity_Start_Time,\n'@{utcnow()}' as CopyActivity_End_Time,\n'@{activity('Copy-Table').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_queuingDuration_in_secs,\n'@{activity('Copy-Table').output.executionDetails[0].detailedDurations.timeToFirstByte}' as CopyActivity_timeToFirstByte_in_secs,\n'@{activity('Copy-Table').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_transferDuration_in_secs",
+									"sqlReaderQuery": "SELECT '@{pipeline().DataFactory}' as DataFactory_Name,\n'@{pipeline().Pipeline}' as Pipeline_Name,\n'@{pipeline().RunId}' as RunId,\n'ADLS' as Source,\n'Azure SQL' as Destination,\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerId,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n'@{activity('Copy data csv to azure  sql db').output.rowsCopied}' as rowsCopied,\n'@{activity('Copy data csv to azure  sql db').output.rowsRead}' as RowsRead,\n'@{activity('Copy data csv to azure  sql db').output.usedParallelCopies}' as No_ParallelCopies,\n'@{activity('Copy data csv to azure  sql db').output.copyDuration}' as copyDuration_in_secs,\n'@{activity('Copy data csv to azure  sql db').output.effectiveIntegrationRuntime}' as effectiveIntegrationRuntime,\n'@{activity('Copy data csv to azure  sql db').output.executionDetails[0].source.type}' as Source_Type,\n'@{activity('Copy data csv to azure  sql db').output.executionDetails[0].sink.type}' as Sink_Type,\n'@{activity('Copy data csv to azure  sql db').output.executionDetails[0].status}' as Execution_Status,\n'@{activity('Copy data csv to azure  sql db').output.executionDetails[0].start}' as CopyActivity_Start_Time,\n'@{utcnow()}' as CopyActivity_End_Time",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
