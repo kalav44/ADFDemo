@@ -1,0 +1,12 @@
+{
+	"name": "ds_sql_logs_dest",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_dest",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}

@@ -19,7 +19,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select * from ADFTableList where IsActive=1\nand SourceSystemName='ADLS' and DestSystemName='AzureSQLArchivalDB' \nand DestTableName not in ('INSTALLATION_COMMENTS')\nand DestTableName='INSTALLATION_IDENTS'",
+						"sqlReaderQuery": "select * from ADFTableList where IsActive=1\nand SourceSystemName='ADLS' and DestSystemName='AzureSQLArchivalDB' \nand DestTableName not in ('INSTALLATION_COMMENTS')\nand DestTableName in ('INSTALLATION_KPI_BLOCKS','INSTALLATION_TECH_DETAILS')",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -137,8 +137,62 @@
 							]
 						},
 						{
-							"name": "Lookup sql check sum builder",
-							"type": "Lookup",
+							"name": "Stored procedure on copy success",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Copy pipeline logs success",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[usp_sql2adls_data_files_loaded_Success]"
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_sql_dest",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Stored procedure on copy faliure",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Copy pipeline logs_copy failure",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[usp_sql2adls_data_files_loaded_Fail]"
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_sql_dest",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Copy pipeline logs success",
+							"type": "Copy",
 							"dependsOn": [
 								{
 									"activity": "Copy data csv to azure  sql db",
@@ -158,29 +212,91 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": {
-										"value": "@concat('SELECT CHECKSUM_AGG(CHECKSUM(*)) \nFROM',item().DestTableName\")",
-										"type": "Expression"
-									},
+									"sqlReaderQuery": "SELECT '@{pipeline().DataFactory}' as DataFactory_Name,\n'@{pipeline().Pipeline}' as Pipeline_Name,\n'@{pipeline().RunId}' as RunId,\n'@{item().src_name}' as Source,\n'@{item().dst_name}' as Destination,\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerId,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n'@{activity('Copy-Table').output.rowsCopied}' as rowsCopied,\n'@{activity('Copy-Table').output.rowsRead}' as RowsRead,\n'@{activity('Copy-Table').output.usedParallelCopies}' as No_ParallelCopies,\n'@{activity('Copy-Table').output.copyDuration}' as copyDuration_in_secs,\n'@{activity('Copy-Table').output.effectiveIntegrationRuntime}' as effectiveIntegrationRuntime,\n'@{activity('Copy-Table').output.executionDetails[0].source.type}' as Source_Type,\n'@{activity('Copy-Table').output.executionDetails[0].sink.type}' as Sink_Type,\n'@{activity('Copy-Table').output.executionDetails[0].status}' as Execution_Status,\n'@{activity('Copy-Table').output.executionDetails[0].start}' as CopyActivity_Start_Time,\n'@{utcnow()}' as CopyActivity_End_Time,\n'@{activity('Copy-Table').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_queuingDuration_in_secs,\n'@{activity('Copy-Table').output.executionDetails[0].detailedDurations.timeToFirstByte}' as CopyActivity_timeToFirstByte_in_secs,\n'@{activity('Copy-Table').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_transferDuration_in_secs",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
-								"dataset": {
-									"referenceName": "ds_sql_dest",
-									"type": "DatasetReference",
-									"parameters": {
-										"TableName": {
-											"value": "@item().DestTableName",
-											"type": "Expression"
-										},
-										"schema": {
-											"value": "@item().DestDBSchema",
-											"type": "Expression"
-										}
-									}
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
 								},
-								"firstRowOnly": false
-							}
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_sql_logs_dest",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_sql_logs_dest_table",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "Copy pipeline logs_copy failure",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Copy data csv to azure  sql db",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT '@{pipeline().DataFactory}' as DataFactory_Name,\n'@{pipeline().Pipeline}' as Pipeline_Name,\n'@{pipeline().RunId}' as RunId,\n'@{item().src_name}' as Source,\n'@{item().dst_name}' as Destination,\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerId,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n'@{activity('Copy-Table').output.rowsCopied}' as rowsCopied,\n'@{activity('Copy-Table').output.rowsRead}' as RowsRead,\n'@{activity('Copy-Table').output.usedParallelCopies}' as No_ParallelCopies,\n'@{activity('Copy-Table').output.copyDuration}' as copyDuration_in_secs,\n'@{activity('Copy-Table').output.effectiveIntegrationRuntime}' as effectiveIntegrationRuntime,\n'@{activity('Copy-Table').output.executionDetails[0].source.type}' as Source_Type,\n'@{activity('Copy-Table').output.executionDetails[0].sink.type}' as Sink_Type,\n'@{activity('Copy-Table').output.executionDetails[0].status}' as Execution_Status,\n'@{activity('Copy-Table').output.executionDetails[0].start}' as CopyActivity_Start_Time,\n'@{utcnow()}' as CopyActivity_End_Time,\n'@{activity('Copy-Table').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_queuingDuration_in_secs,\n'@{activity('Copy-Table').output.executionDetails[0].detailedDurations.timeToFirstByte}' as CopyActivity_timeToFirstByte_in_secs,\n'@{activity('Copy-Table').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_transferDuration_in_secs",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_sql_logs_dest",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_sql_logs_dest_table",
+									"type": "DatasetReference"
+								}
+							]
 						}
 					]
 				}
